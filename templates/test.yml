@@ -6,7 +6,7 @@ steps:
   displayName: 'dotnet test ${{ parameters.buildConfiguration }}'
   inputs:
     command: 'test'
-    arguments: '--configuration ${{ parameters.buildConfiguration }} /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
+    arguments: '--configuration ${{ parameters.buildConfiguration }} /p:CollectCoverage=true /p:CoverletOutputFormat=opencover'
     publishTestResults: true
     projects: '**/*.Tests.csproj'
     nobuild: true
@@ -21,7 +21,7 @@ steps:
 # Generate the report using ReportGenerator (https://github.com/danielpalme/ReportGenerator)
 # First install the tool on the machine, then run it
 - script: |
-    reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines;cobertura
+    reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.opencover.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines;opencover
   displayName: Create Code coverage report
 
 # Publish the code coverage result (summary and web site)
@@ -30,6 +30,6 @@ steps:
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish code coverage'
   inputs:
-    codeCoverageTool: Cobertura
-    summaryFileLocation: '$(Build.SourcesDirectory)/CodeCoverage/Cobertura.xml'
+    codeCoverageTool: opencover
+    summaryFileLocation: '$(Build.SourcesDirectory)/CodeCoverage/opencover.xml'
     reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
