@@ -7,6 +7,11 @@ variables:
   wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
 
 steps:
+- task: DotNetCoreInstaller@0
+  displayName: 'Use .NET Core SDK 2.1'
+  inputs:
+    version: 2.1.9
+
 - task: Npm@1
   displayName: 'npm install'
   inputs:
