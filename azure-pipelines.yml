@@ -33,6 +33,13 @@ steps:
     command: 'restore'
     projects: '**/*.csproj'
 
+- task: SonarQubePrepare@4
+  displayName: 'Prepare analysis on SonarQube'
+  inputs:
+    SonarQube: 'SonarQube connection 1'
+    projectKey: c000e0345adbb6766e6a6e9eda6167e297523145
+    projectName: SpaceGame-Web-04111
+
 - template: templates/build.yml
   parameters:
     buildConfiguration: 'Debug'
@@ -51,6 +58,12 @@ steps:
     testRunner: 'VSTest'
     searchFolder: $(Agent.TempDirectory)
     testResultsFiles: '**/*.trx'
+
+- task: SonarQubeAnalyze@4
+  displayName: 'Run SonarQube analysis'
+
+- task: SonarQubePublish@4
+  displayName: 'Publish SonarQube results'
 
 - task: PublishBuildArtifacts@1
   condition: succeeded()
