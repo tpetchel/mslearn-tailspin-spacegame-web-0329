@@ -4,6 +4,9 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <!-- SonarQube needs this -->
+    <ProjectGuid>{773BA444-0D67-4F37-8762-17E108CCD5F5}</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>
