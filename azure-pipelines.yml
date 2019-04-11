@@ -44,8 +44,8 @@ steps:
   displayName: 'Prepare analysis on SonarQube'
   inputs:
     SonarQube: 'SonarQube connection 1'
-    projectKey: c000e0345adbb6766e6a6e9eda6167e297523145
-    projectName: SpaceGame-Web-04111
+    projectKey: tpetchel_mslearn-tailspin-spacegame-web-0329
+    projectName: tpetchel_mslearn-tailspin-spacegame-web-0329
 
 - template: templates/build.yml
   parameters:
