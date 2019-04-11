@@ -46,6 +46,9 @@ steps:
     SonarQube: 'SonarQube connection 1'
     projectKey: mslearn-tailspin-spacegame-web-0329
     projectName: mslearn-tailspin-spacegame-web-0329
+  extraProperties: |
+    sonar.organization=tpetchel-github
+    sonar.branch.name=$(Build.SourceBranchName)
 
 - template: templates/build.yml
   parameters:
