@@ -13,6 +13,13 @@ steps:
   inputs:
     version: '$(dotnetSdkVersion)'
 
+- task: DotNetCoreCLI@2
+  displayName: 'Install reportgenerator'
+  inputs:
+    command: custom
+    custom: tool
+    arguments: 'install -g dotnet-reportgenerator-globaltool'
+
 - task: Npm@1
   displayName: 'npm install'
   inputs:
@@ -52,12 +59,23 @@ steps:
   parameters:
     buildConfiguration: 'Debug'
 
+- script: |
+    reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines
+  displayName: 'Create code coverage report'
+
 - task: PublishTestResults@2
   condition: succeeded()
   inputs:
     testRunner: 'VSTest'
     searchFolder: $(Agent.TempDirectory)
     testResultsFiles: '**/*.trx'
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage report'
+  inputs:
+    codeCoverageTool: 'cobertura'
+    summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+    reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
 
 - task: SonarQubeAnalyze@4
   displayName: 'Run SonarQube analysis'
