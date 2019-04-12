@@ -40,15 +40,13 @@ steps:
     command: 'restore'
     projects: '**/*.csproj'
 
-- task: SonarQubePrepare@4
-  displayName: 'Prepare analysis on SonarQube'
+steps:
+- task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@1
+  displayName: 'Prepare analysis on SonarCloud'
   inputs:
-    SonarQube: 'SonarQube connection 1'
+    SonarCloud: 'SonarQube connection 1'
+    organization: 'tpetchel-github'
     projectKey: mslearn-tailspin-spacegame-web-0329
-    projectName: mslearn-tailspin-spacegame-web-0329
-    extraProperties: |
-      sonar.organization=tpetchel-github
-      sonar.branch.name=$(Build.SourceBranchName)
 
 - template: templates/build.yml
   parameters:
@@ -80,11 +78,9 @@ steps:
     summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
     reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
 
-- task: SonarQubeAnalyze@4
-  displayName: 'Run SonarQube analysis'
-
-- task: SonarQubePublish@4
-  displayName: 'Publish SonarQube results'
+steps:
+- task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@1
+  displayName: 'Run Code Analysis'
 
 - task: PublishBuildArtifacts@1
   condition: succeeded()
